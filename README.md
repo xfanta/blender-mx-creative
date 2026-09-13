@@ -12,9 +12,8 @@ actually live in Blender instead of being blind shortcuts.
 macOS only for now. Tested with Blender 5.2, Logi Options+ 2.7 and Logi Plugin
 Service 6.4 on Apple silicon.
 
-The C# plugin and the tooling are MIT. The bundled Blender UI icons are GPL, and
-the Blender add-on is GPL-3.0-or-later — [NOTICE.md](NOTICE.md) says which file is
-which.
+GPL-3.0-or-later throughout, because it bundles Blender's own UI icons and the
+add-on uses `bpy` — see [NOTICE.md](NOTICE.md).
 
 ## How it works
 
@@ -106,13 +105,12 @@ what that means for licensing.
 
 The package itself would pass: `logiplugintool verify` is happy, the icon is in
 `metadata/`, and `LoupedeckPackage.yaml` carries the licence and URLs the approval
-guidelines ask for. The licensing is what keeps it here instead.
+guidelines ask for. The licence is what keeps it here instead.
 
 Marketplace approval requires open-source components to be MIT or Apache 2.0 and
-excludes GPL outright. The bundled Blender UI icons come from Blender's GPL source
-tree, the plugin icon is a Blender Foundation trademark, and the add-on imports
-`bpy`, so it is GPL by nature. Clearing that would mean redrawing all 39 icons or
-getting written permission — and then writing a Developer EULA on top.
+excludes GPL outright — and this is GPL, necessarily so, because it ships Blender's
+icons and drives Blender through `bpy`. Going the other way would mean redrawing
+all 39 icons so nothing GPL remains in the package, plus a Developer EULA.
 
 Installing from this repository costs one `unzip` and avoids the whole question.
 
@@ -295,5 +293,10 @@ the reference fixes it.
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE). Bundled Blender artwork is not MIT; see
-[NOTICE.md](NOTICE.md).
+**GPL-3.0-or-later** — see [LICENSE](LICENSE).
+
+The project bundles Blender's UI icons and its add-on uses Blender's Python API, and
+both of those oblige it. [NOTICE.md](NOTICE.md) spells out which files come from
+Blender, which are original, and where the Blender logo fits in.
+
+Not affiliated with the Blender Foundation or Logitech.

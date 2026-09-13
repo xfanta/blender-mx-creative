@@ -1,41 +1,37 @@
-# Third-party assets
+# Attribution
 
-The code in this repository is MIT licensed (see `LICENSE`). The artwork is not
-all mine, and the distinction matters if you plan to redistribute it.
+This project is licensed under **GPL-3.0-or-later** (see `LICENSE`). That is not
+an arbitrary choice — it follows from what it is built on.
 
-## Blender UI icons
+## Why GPL
 
-`BlenderPlugin/src/Icons/Blender/` holds 39 SVGs taken from Blender's source tree
-(`release/datafiles/icons_svg/`). Only their `viewBox` has been rewritten, by
-`tools/normalize_icons.py`; the drawings are unchanged.
+Two things force it:
 
-Blender is **GNU GPL v3 or later**, and these files are part of that source tree,
-so that is the licence they carry here too.
+* **Blender's UI icons.** `BlenderPlugin/src/Icons/Blender/` holds 39 SVGs taken
+  from Blender's source tree (`release/datafiles/icons_svg/`). Blender is GNU GPL
+  v3 or later, so these files carry that licence, and so must anything that
+  redistributes them — including `dist/Blender.lplug4`.
+* **The add-on.** `blender-addon/blender_mx_bridge/` imports `bpy`. Blender's
+  licensing page is explicit that the Python API is an integral part of the
+  software and that published scripts must be shared under a GPL compliant
+  licence.
 
-## Blender application icon
+Only the icons' `viewBox` has been rewritten, by `tools/normalize_icons.py`; the
+drawings themselves are unchanged.
+
+## Original artwork
+
+`BlenderPlugin/src/Icons/Tools/` — extrude, inset, subdivide, loop cut, knife and
+merge — are drawn from scratch to match Blender's icon style, because Blender ships
+those tool icons only in its internal `VCO` binary format. They are original work,
+released under the same GPL-3.0-or-later as the rest of the project.
+
+## Trademark
 
 `BlenderPlugin/src/package/metadata/Icon256x256.png` is Blender's own application
 icon, extracted from `Blender.app` and cropped to fill its canvas. The Blender logo
-is a trademark of the Blender Foundation, used here to identify which application
-this plugin drives.
+is a trademark of the Blender Foundation and is used here only to identify which
+application this plugin drives.
 
-## Hand-drawn tool icons
-
-`BlenderPlugin/src/Icons/Tools/` — extrude, inset, subdivide, loop cut, knife and
-merge — are original, drawn to match Blender's icon style because Blender ships
-those tool icons only in its internal `VCO` binary format. These are MIT like the
-rest of the repository.
-
-## What this means for redistribution
-
-The Logitech Marketplace requires open-source components to be MIT or Apache 2.0
-and **explicitly excludes GPL**. Shipping the Blender-derived icons and the Blender
-logo inside a Marketplace package is therefore not something you can do without
-clearing it first. See the *Marketplace* section of the README.
-
-## The Blender add-on
-
-`blender-addon/blender_mx_bridge/` is **GPL-3.0-or-later**, not MIT. Blender's own
-licensing page is explicit that the Python API is an integral part of the software
-and that published scripts must be shared under a GPL compliant licence. The add-on
-is distributed from this repository only; it is not part of the `.lplug4`.
+This project is not affiliated with, endorsed by, or supported by the Blender
+Foundation or Logitech.

@@ -47,7 +47,8 @@ minimumLoupedeckVersion: 6.0
 # MARKETPLACE SETTINGS
 # ==================================================================================================
 
-license: MIT
-licenseUrl: https://opensource.org/licenses/MIT
+# GPL, because the package bundles Blender's own UI icons. See NOTICE.md.
+license: GPL-3.0-or-later
+licenseUrl: https://www.gnu.org/licenses/gpl-3.0.html
 homePageUrl: https://github.com/xfanta/blender-mx-creative
 supportPageUrl: https://github.com/xfanta/blender-mx-creative/issues
