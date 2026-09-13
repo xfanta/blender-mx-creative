@@ -120,9 +120,15 @@ namespace Loupedeck.BlenderPlugin
             }
 
             var bridge = this.BlenderPlugin?.Bridge;
-            var handled = item.Command != null && bridge != null && bridge.TryInvoke(item.Command, item.Arguments);
+            var result = item.Command == null || bridge == null
+                ? BridgeResult.Unreachable
+                : bridge.Invoke(item.Command, item.Arguments);
 
-            if (!handled && item.Key.HasValue)
+            // Only stand in for a bridge that is not there. If Blender heard the
+            // command and refused it - wrong mode, usually - sending the shortcut
+            // would fire whatever that key happens to mean instead: in object mode
+            // 1, 2 and 3 toggle collection visibility rather than select modes.
+            if (result == BridgeResult.Unreachable && item.Key.HasValue)
             {
                 this.Plugin.ClientApplication.SendKeyboardShortcut(item.Key.Value, item.Modifiers);
 

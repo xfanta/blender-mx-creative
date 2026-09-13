@@ -48,13 +48,13 @@ namespace Loupedeck.BlenderPlugin
 
         protected override void ApplyAdjustment(String actionParameter, Int32 diff)
         {
-            this.Bridge?.TryInvoke("adjust", new { what = this.Adjustment, delta = diff });
+            this.Bridge?.Invoke("adjust", new { what = this.Adjustment, delta = diff });
             this.AdjustmentValueChanged();
         }
 
         protected override void RunCommand(String actionParameter)
         {
-            this.Bridge?.TryInvoke("set", new { what = this.Adjustment, value = this.ResetValue });
+            this.Bridge?.Invoke("set", new { what = this.Adjustment, value = this.ResetValue });
             this.AdjustmentValueChanged();
         }
 

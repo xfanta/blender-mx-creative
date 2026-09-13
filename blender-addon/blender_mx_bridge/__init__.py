@@ -132,10 +132,26 @@ def _cmd_state(args):
 
 
 def _cmd_select_mode(args):
-    """Set the mesh select mode. types is any of VERT / EDGE / FACE."""
+    """Set the mesh select mode. types is any of VERT / EDGE / FACE.
+
+    In edit mode this goes through the same operator Blender's own 1/2/3 keys
+    call. Writing tool_settings.mesh_select_mode directly does change the value,
+    but it skips the selection flush between modes and leaves the viewport
+    showing the old one - which looks exactly like the button doing nothing.
+    """
     types = args.get("types") or ["VERT"]
-    ts = bpy.context.scene.tool_settings
-    ts.mesh_select_mode = (
+    obj = _active_object()
+
+    if obj is not None and obj.mode == 'EDIT':
+        window, area, region, _ = _find_view3d()
+        if area is not None:
+            with bpy.context.temp_override(window=window, area=area, region=region):
+                for index, select_type in enumerate(types):
+                    bpy.ops.mesh.select_mode(type=select_type, use_extend=index > 0)
+            return {}
+
+    # Outside edit mode there is nothing to flush; just remember the choice.
+    bpy.context.scene.tool_settings.mesh_select_mode = (
         'VERT' in types,
         'EDGE' in types,
         'FACE' in types,
@@ -282,12 +298,28 @@ _HANDLERS = {
 }
 
 
+def _tag_redraw():
+    """Ask every area to redraw.
+
+    Commands that write to bpy.data rather than going through an operator leave
+    the interface showing stale values until something else happens to trigger a
+    redraw. Toggles and pivot/orientation changes are all in that category.
+    """
+    for window in bpy.context.window_manager.windows:
+        screen = window.screen
+        if screen is None:
+            continue
+        for area in screen.areas:
+            area.tag_redraw()
+
+
 def _handle(request):
     cmd = request.get("cmd")
     handler = _HANDLERS.get(cmd)
     if handler is None:
         return {"ok": False, "error": "unknown command: %s" % cmd}
     payload = handler(request.get("args") or {}) or {}
+    _tag_redraw()
     response = {"ok": True}
     response.update(payload)
     response["state"] = _collect_state()

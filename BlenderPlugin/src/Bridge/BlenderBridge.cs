@@ -28,8 +28,18 @@ namespace Loupedeck.BlenderPlugin
     // One request per line of JSON, one response per line. Every response carries
     // a full state snapshot, so a successful command doubles as a state refresh.
     //
-    // When the add-on is not running, TryInvoke fails fast and the caller falls
+    // When the add-on is not running, Invoke reports Unreachable and the caller falls
     // back to sending a keyboard shortcut instead.
+
+    // Why a command did not take effect. The distinction matters: falling back to
+    // a keystroke is right when Blender could not be reached, and wrong when
+    // Blender heard the command and refused it.
+    public enum BridgeResult
+    {
+        Unreachable,
+        Rejected,
+        Ok,
+    }
 
     public sealed class BlenderBridge : IDisposable
     {
@@ -85,9 +95,8 @@ namespace Loupedeck.BlenderPlugin
             this.Disconnect();
         }
 
-        // Sends a command. Returns false when the bridge is unreachable or the
-        // add-on reported an error, in which case the caller should fall back.
-        public Boolean TryInvoke(String command, Object arguments = null)
+        // Sends a command and reports how it went.
+        public BridgeResult Invoke(String command, Object arguments = null)
         {
             var request = new Dictionary<String, Object>
             {
@@ -102,20 +111,20 @@ namespace Loupedeck.BlenderPlugin
 
             if (!this.Exchange(request, out var response))
             {
-                return false;
+                return BridgeResult.Unreachable;
             }
 
             if (!response.TryGetProperty("ok", out var ok) || ok.ValueKind != JsonValueKind.True)
             {
                 var error = response.TryGetProperty("error", out var e) ? e.GetString() : "unknown error";
                 PluginLog.Warning($"Blender rejected '{command}': {error}");
-                return false;
+                return BridgeResult.Rejected;
             }
 
-            return true;
+            return BridgeResult.Ok;
         }
 
-        public void Refresh() => this.TryInvoke("state");
+        public void Refresh() => this.Invoke("state");
 
         private void Poll(Object _)
         {

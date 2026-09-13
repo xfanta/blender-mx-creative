@@ -33,6 +33,12 @@ shortcut. You lose the state readout, not the function. The fallback sends physi
 key codes, so it also works on layouts where the digits need Shift — a Czech QWERTZ
 keyboard, for instance, where `1`–`3` would otherwise never reach Blender.
 
+The fallback only covers an add-on that cannot be reached. When Blender *is*
+reached and refuses the command — almost always the wrong mode — nothing is sent,
+because the shortcut would then fire whatever that key means in the current
+context: in object mode `1`, `2` and `3` toggle collection visibility rather than
+select modes.
+
 Undo and redo are keystroke-only on purpose: Blender refuses to run `ed.undo` from
 outside its own event loop.
 
@@ -174,6 +180,13 @@ Commands: `ping`, `state`, `select_mode`, `op`, `toggle`, `set`, `snap_elements`
 `adjust`. Every response carries a full state snapshot, so a command doubles as a
 refresh. Socket threads only queue work; everything touching `bpy` runs on Blender's
 main thread via a timer.
+
+Anything that writes to `bpy.data` instead of going through an operator has to ask
+the interface to redraw afterwards, or the value changes while the screen keeps
+showing the old one. `select_mode` learned this the hard way: setting
+`tool_settings.mesh_select_mode` directly looks correct in the data and does
+nothing visible, because it also skips the selection flush between modes. It now
+calls `bpy.ops.mesh.select_mode`, the same operator Blender's 1/2/3 keys use.
 
 ### Regenerating the assets
 
