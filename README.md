@@ -12,6 +12,10 @@ actually live in Blender instead of being blind shortcuts.
 macOS only for now. Tested with Blender 5.2, Logi Options+ 2.7 and Logi Plugin
 Service 6.4 on Apple silicon.
 
+The C# plugin and the tooling are MIT. The bundled Blender UI icons are GPL, and
+the Blender add-on is GPL-3.0-or-later — [NOTICE.md](NOTICE.md) says which file is
+which.
+
 ## How it works
 
 ```

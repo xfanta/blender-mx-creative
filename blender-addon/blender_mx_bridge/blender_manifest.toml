@@ -8,7 +8,7 @@ maintainer = "Michal Fanta <michal.fanta@xfanta.cz>"
 type = "add-on"
 
 blender_version_min = "4.2.0"
-license = ["SPDX:MIT"]
+license = ["SPDX:GPL-3.0-or-later"]
 
 [permissions]
 network = "Listens on 127.0.0.1 for commands from the Logi Options+ plugin"

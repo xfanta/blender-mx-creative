@@ -9,7 +9,8 @@ all mine, and the distinction matters if you plan to redistribute it.
 (`release/datafiles/icons_svg/`). Only their `viewBox` has been rewritten, by
 `tools/normalize_icons.py`; the drawings are unchanged.
 
-Blender is **GNU GPL v2 or later**, and these files are part of that source tree.
+Blender is **GNU GPL v3 or later**, and these files are part of that source tree,
+so that is the licence they carry here too.
 
 ## Blender application icon
 
@@ -32,6 +33,9 @@ and **explicitly excludes GPL**. Shipping the Blender-derived icons and the Blen
 logo inside a Marketplace package is therefore not something you can do without
 clearing it first. See the *Marketplace* section of the README.
 
-The Blender add-on under `blender-addon/` imports `bpy` and is a Blender add-on in
-the ordinary sense; treat it as GPL. It is distributed separately from the Options+
-package and is not part of the `.lplug4`.
+## The Blender add-on
+
+`blender-addon/blender_mx_bridge/` is **GPL-3.0-or-later**, not MIT. Blender's own
+licensing page is explicit that the Python API is an integral part of the software
+and that published scripts must be shared under a GPL compliant licence. The add-on
+is distributed from this repository only; it is not part of the `.lplug4`.
