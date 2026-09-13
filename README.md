@@ -98,28 +98,19 @@ icons Blender ships only in its internal `VCO` format — extrude, inset, subdiv
 loop cut, knife, merge — are redrawn here to match. See [NOTICE.md](NOTICE.md) for
 what that means for licensing.
 
-## Marketplace
+## Why this is not on the Logitech Marketplace
 
-The package is submission-shaped: `logiplugintool verify` passes, the icon is in
-`metadata/`, and `LoupedeckPackage.yaml` carries the licence, home page and support
-page that the guidelines ask for. Submissions go through
-<https://marketplace.logitech.com/contribute>, and the reviewers suggest naming the
-file `pluginName_version.lplug4`.
+The package itself would pass: `logiplugintool verify` is happy, the icon is in
+`metadata/`, and `LoupedeckPackage.yaml` carries the licence and URLs the approval
+guidelines ask for. The licensing is what keeps it here instead.
 
-Two things would have to be settled first, though:
+Marketplace approval requires open-source components to be MIT or Apache 2.0 and
+excludes GPL outright. The bundled Blender UI icons come from Blender's GPL source
+tree, the plugin icon is a Blender Foundation trademark, and the add-on imports
+`bpy`, so it is GPL by nature. Clearing that would mean redrawing all 39 icons or
+getting written permission — and then writing a Developer EULA on top.
 
-* **Licensing.** The approval guidelines require open-source components to be MIT
-  or Apache 2.0 and exclude GPL outright. The bundled Blender UI icons come from
-  Blender's GPL source tree, and the plugin icon is the Blender logo, a Blender
-  Foundation trademark. Redrawing the icons, or getting written permission, is the
-  honest way through.
-* **A Developer EULA.** Marketplace requires every submission to ship one, on top
-  of the Developer Agreement the author has to accept.
-
-The add-on is a separate problem: it imports `bpy`, so it is GPL by nature. It is
-not part of the `.lplug4` and would stay distributed from here, which is fine — but
-a Marketplace listing that only works once you install a GPL add-on from GitHub is
-worth flagging to the reviewers rather than hiding.
+Installing from this repository costs one `unzip` and avoids the whole question.
 
 ## Development
 
