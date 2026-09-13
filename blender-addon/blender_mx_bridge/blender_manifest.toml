@@ -1,0 +1,14 @@
+schema_version = "1.0.0"
+
+id = "blender_mx_bridge"
+version = "1.0.0"
+name = "MX Console Bridge"
+tagline = "Local bridge that lets the Logitech MX Creative Console drive Blender"
+maintainer = "Michal Fanta <michal.fanta@xfanta.cz>"
+type = "add-on"
+
+blender_version_min = "4.2.0"
+license = ["SPDX:MIT"]
+
+[permissions]
+network = "Listens on 127.0.0.1 for commands from the Logi Options+ plugin"

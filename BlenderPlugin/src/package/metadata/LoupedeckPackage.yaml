@@ -1,0 +1,53 @@
+# ==================================================================================================
+# GENERAL SETTINGS
+# ==================================================================================================
+
+type: plugin4
+
+name: Blender
+displayName: Blender
+description: >-
+  Mesh editing controls for Blender - select mode, modelling tools, snapping and
+  pivot - with live state on the keys. Talks to the "MX Console Bridge" add-on
+  when it is running and falls back to keyboard shortcuts when it is not.
+
+pluginFileName: BlenderPlugin.dll
+
+version: 1.0
+author: michalfanta
+copyright: Copyright © 2026 michalfanta. All rights reserved.
+
+
+# ==================================================================================================
+# PLUGIN PROPERTIES
+# ==================================================================================================
+
+pluginFolderMac: bin
+
+# Loupedeck70 / 71 / 72 - MX Creative Keypad, MX Creative Dialpad and the Actions Ring.
+supportedDevices:
+    - LogitechCreativeFamily
+
+pluginCapabilities:
+    # The plugin's actions belong to an application (Blender).
+    - HasApplication
+
+    # Actions fall back to sending keyboard shortcuts, which requires Blender to be in front.
+    - ActivatesApplication
+
+applicationPatterns:
+    processNamePattern: ^blender$
+    bundleNamePattern: ^org\.blenderfoundation\.blender$
+    displayNamePattern: ^Blender$
+
+minimumLoupedeckVersion: 6.0
+
+
+# ==================================================================================================
+# MARKETPLACE SETTINGS
+# ==================================================================================================
+
+license: MIT
+licenseUrl: https://opensource.org/licenses/MIT
+homePageUrl: https://github.com/xfanta/blender-mx-creative
+supportPageUrl: https://github.com/xfanta/blender-mx-creative/issues
