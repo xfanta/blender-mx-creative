@@ -37,10 +37,17 @@ ICONS = ROOT / "BlenderPlugin" / "src" / "Icons"
 
 # How much of the square the longest side of the pictogram takes up.
 ART_FRACTION = 0.86
+# Measuring rasterises at PROBE pixels, so a bounding box is only accurate to
+# about a pixel of viewBox units. Rewriting a file over less than that starts a
+# feedback loop - the new viewBox shifts the render, which shifts the next
+# measurement - and the artwork walks a unit per run. Leave it alone instead.
+TOLERANCE = 4
 # Resolution used to measure the artwork; higher is slower, not more correct.
 PROBE = 600
 
 VIEWBOX = re.compile(r'viewBox\s*=\s*"([-\d.\s]+)"')
+DIMENSION = re.compile(r'\b(width|height)\s*=\s*"[^"]*"')
+SVG_TAG = re.compile(r"<svg\b[^>]*>")
 
 
 def measure(path, x0, y0, w, h):
@@ -70,12 +77,33 @@ def main():
         x0, y0, w, h = (float(v) for v in match.group(1).split())
         bx0, by0, bx1, by1 = measure(path, x0, y0, w, h)
 
-        side = max(bx1 - bx0, by1 - by0) / ART_FRACTION
-        cx, cy = (bx0 + bx1) / 2, (by0 + by1) / 2
-        box = f"{cx - side / 2:.1f} {cy - side / 2:.1f} {side:.1f} {side:.1f}"
+        # Rounded to whole units: measuring rasterises at PROBE pixels, so the
+        # last fraction jitters between runs and would rewrite every file for
+        # nothing. A unit out of ~1500 is far below anything visible.
+        side = round(max(bx1 - bx0, by1 - by0) / ART_FRACTION)
+        cx, cy = round((bx0 + bx1) / 2), round((by0 + by1) / 2)
+        box = f"{cx - side // 2} {cy - side // 2} {side} {side}"
 
         updated = VIEWBOX.sub(f'viewBox="{box}"', svg, count=1)
-        if updated != svg:
+        # The width and height attributes have to follow the viewBox. Leaving them
+        # at the original non-square values makes rsvg letterbox the document when
+        # measuring, so the next run reads a wrong bounding box and the artwork
+        # creeps a little smaller every time this is run.
+        def rewrite_tag(match):
+            tag = DIMENSION.sub("", match.group(0))
+            # Removing attributes leaves the gaps behind; collapse them or every
+            # run adds two more spaces and the file never settles.
+            tag = re.sub(r"\s+", " ", tag).replace("< svg", "<svg")
+            return tag.replace("<svg", f'<svg width="{side}" height="{side}"', 1)
+
+        updated = SVG_TAG.sub(rewrite_tag, updated, count=1)
+
+        current = [float(v) for v in match.group(1).split()]
+        wanted = [cx - side // 2, cy - side // 2, side, side]
+        settled = (len(current) == 4
+                   and all(abs(a - b) <= TOLERANCE for a, b in zip(current, wanted)))
+
+        if updated != svg and not settled:
             path.write_text(updated)
             changed += 1
 

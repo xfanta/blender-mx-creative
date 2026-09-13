@@ -7,7 +7,7 @@ It is built for editing a mesh by hand: vertex / edge / face select mode, the
 modelling tools, snapping, pivot and orientation — with the keys showing what is
 actually live in Blender instead of being blind shortcuts.
 
-![The four shipped keypad pages](docs/keypad.png)
+![The five shipped keypad pages](docs/keypad.png)
 
 macOS only for now. Tested with Blender 5.2, Logi Options+ 2.7 and Logi Plugin
 Service 6.4 on Apple silicon.
@@ -94,17 +94,26 @@ you want to rearrange them.
 | Select Mode | Vertex, Edge, Face, Vert+Edge+Face |
 | Mode | Edit Mode (toggle), Object, Sculpt |
 | Selection | Select All, Deselect, Invert, Linked, Grow, Shrink |
-| Mesh Tools | Extrude, Inset, Bevel, Loop Cut, Knife, Subdivide, Merge, Delete, Duplicate, Recalc Normals, Shade Smooth |
+| Mesh Tools | Extrude, Inset, Bevel, Loop Cut, Knife, Subdivide, Merge, Make Face, Delete, Duplicate, Flatten X/Y/Z, Recalc Normals, Shade Smooth |
 | Toggles | X-Ray, Proportional, Snap, Auto Merge |
 | Pivot Point | Median, 3D Cursor, Individual, Active, Bounding Box |
 | Orientation | Global, Local, Normal, View, Gimbal, 3D Cursor |
 | History | Undo, Redo |
 | Dials | Proportional Size, Subdivision Level |
 
-Subdivide has no default shortcut in Blender, so that one needs the add-on running.
+Subdivide has no default shortcut in Blender, so that one needs the add-on running,
+and so do Flatten X/Y/Z — those stand in for typing `S` `Z` `0`, a sequence rather
+than a shortcut, so there is nothing for the fallback to send.
 
-The shipped keypad pages are **Select**, **Tools**, **Transform** and **Finish**, in
-that order. There is no default profile for the Actions Ring.
+The shipped keypad pages are **Select**, **Custom**, **Tools**, **Transform** and
+**Finish**, in that order. *Custom* is a working page: inset, make face, delete,
+knife, merge, extrude and the three flattens, kept together because that is one
+person's modelling loop. Edit `KEYPAD_PAGES` in `tools/make_profiles.py` and
+regenerate to make it yours.
+
+![The Custom page](docs/custom-page.png)
+
+There is no default profile for the Actions Ring.
 
 Icons are Blender's own UI icons, recoloured and rendered per button. The six tool
 icons Blender ships only in its internal `VCO` format — extrude, inset, subdivide,
@@ -209,8 +218,11 @@ render at visibly different sizes and positions.
 
 ![Before and after normalising the viewBoxes](docs/icon-normalisation.png)
 
-It only touches the viewBox, so it is safe to re-run, and it must run before
-`make_actionsymbols.py`, which copies the files.
+It only touches the `viewBox` and the `width`/`height` that must follow it, and it
+leaves a file alone once the measurement is within a few units of what is already
+there — without that it feeds back on itself, because a changed viewBox shifts the
+render that the next measurement reads, and the artwork creeps a unit smaller every
+run. It must run before `make_actionsymbols.py`, which copies the files.
 
 `make_actionsymbols.py` reads the icon each action declares straight out of the C#,
 so the picker glyphs cannot drift from what the buttons draw. `make_profiles.py`

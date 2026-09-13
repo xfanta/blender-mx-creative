@@ -107,6 +107,26 @@ namespace Loupedeck.BlenderPlugin
                 IsAvailable = s => s.IsEditMode,
             });
 
+            // F in Blender's keymap: closes the selected vertices or edges into
+            // an edge or a face.
+            this.Add(new Item
+            {
+                Parameter = "make_face",
+                DisplayName = "Make Face",
+                Icon = "make_face.svg",
+                Command = "op",
+                Arguments = new { name = "mesh.edge_face_add", exec = "EXEC" },
+                Key = VirtualKeyCode.KeyF,
+                IsAvailable = s => s.IsEditMode,
+            });
+
+            // The S Z 0 reflex - scale to nothing along one global axis, which
+            // flattens the selection onto a plane. There is no single shortcut to
+            // fall back to, so these need the add-on.
+            this.AddFlatten("flatten_x", "Flatten X", "flatten_x.svg", new[] { 0.0, 1.0, 1.0 });
+            this.AddFlatten("flatten_y", "Flatten Y", "flatten_y.svg", new[] { 1.0, 0.0, 1.0 });
+            this.AddFlatten("flatten_z", "Flatten Z", "flatten_z.svg", new[] { 1.0, 1.0, 0.0 });
+
             this.Add(new Item
             {
                 Parameter = "delete",
@@ -154,5 +174,20 @@ namespace Loupedeck.BlenderPlugin
                 IsAvailable = s => !s.IsEditMode,
             });
         }
+
+        private void AddFlatten(String parameter, String displayName, String icon, Double[] value) =>
+            this.Add(new Item
+            {
+                Parameter = parameter,
+                DisplayName = displayName,
+                Icon = icon,
+                Command = "op",
+                Arguments = new
+                {
+                    name = "transform.resize",
+                    exec = "EXEC",
+                    props = new { value },
+                },
+            });
     }
 }

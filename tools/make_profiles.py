@@ -67,6 +67,19 @@ KEYPAD_PAGES = [
         ("SelectionCommand", "none"),
         ("SelectionCommand", "invert"),
     ]),
+    # Michal's own modelling loop: inset, close a face, delete, cut, and the
+    # S Z 0 flatten, kept together on one page.
+    ("Custom", [
+        ("MeshToolCommand", "inset"),
+        ("MeshToolCommand", "make_face"),
+        ("MeshToolCommand", "delete"),
+        ("MeshToolCommand", "knife"),
+        ("MeshToolCommand", "merge"),
+        ("MeshToolCommand", "extrude"),
+        ("MeshToolCommand", "flatten_x"),
+        ("MeshToolCommand", "flatten_y"),
+        ("MeshToolCommand", "flatten_z"),
+    ]),
     ("Tools", [
         ("MeshToolCommand", "extrude"),
         ("MeshToolCommand", "inset"),
