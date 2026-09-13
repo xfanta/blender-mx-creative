@@ -53,6 +53,10 @@ Blender → Edit → Preferences → Add-ons → the ▾ menu → *Install from 
 Then **Save Preferences**, or the add-on will not be enabled the next time Blender
 starts.
 
+Updating the add-on later needs a Blender restart. Installing over it replaces the
+files on disk, but the old module stays loaded in memory, so the running Blender
+keeps behaving exactly as it did — which reads as the update having done nothing.
+
 ### 2. The Options+ plugin
 
 `logiplugintool install` hands off to the Options+ UI and fails from a terminal
