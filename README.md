@@ -105,8 +105,8 @@ Subdivide has no default shortcut in Blender, so that one needs the add-on runni
 and so do Flatten X/Y/Z — those stand in for typing `S` `Z` `0`, a sequence rather
 than a shortcut, so there is nothing for the fallback to send.
 
-The shipped keypad pages are **Select**, **Custom**, **Tools**, **Transform** and
-**Finish**, in that order. *Custom* is a working page: inset, make face, delete,
+The shipped keypad pages are **Select**, **Tools**, **Transform**, **Finish** and
+**Custom**, in that order. *Custom* is a working page: inset, make face, delete,
 knife, merge, extrude and the three flattens, kept together because that is one
 person's modelling loop. Edit `KEYPAD_PAGES` in `tools/make_profiles.py` and
 regenerate to make it yours.
