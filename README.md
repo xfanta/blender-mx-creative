@@ -44,10 +44,17 @@ outside its own event loop.
 
 ## Install
 
+Download both files from the [latest release](https://github.com/xfanta/blender-mx-creative/releases/latest):
+
+* [`Blender.lplug4`](https://github.com/xfanta/blender-mx-creative/releases/latest/download/Blender.lplug4) — the Options+ plugin
+* [`blender_mx_bridge.zip`](https://github.com/xfanta/blender-mx-creative/releases/latest/download/blender_mx_bridge.zip) — the Blender add-on
+
+They are also in `dist/` if you cloned the repository.
+
 ### 1. The Blender add-on
 
 Blender → Edit → Preferences → Add-ons → the ▾ menu → *Install from Disk…* → pick
-`dist/blender_mx_bridge.zip`. It enables itself and starts listening on
+`blender_mx_bridge.zip`. It enables itself and starts listening on
 `127.0.0.1:47800`; the port is configurable in the add-on preferences.
 
 Then **Save Preferences**, or the add-on will not be enabled the next time Blender
@@ -66,16 +73,26 @@ keeps behaving exactly as it did — which reads as the update having done nothi
 PLUGINS=~/"Library/Application Support/Logi/LogiPluginService/Plugins"
 rm -rf "$PLUGINS/Blender"
 mkdir -p "$PLUGINS/Blender"
-unzip -q dist/Blender.lplug4 -d "$PLUGINS/Blender"
+unzip -q Blender.lplug4 -d "$PLUGINS/Blender"
 open "loupedeck://plugin/Blender/reload"
 ```
+
+`.lplug4` is a registered file type — `LogiPluginServiceTool.app`, inside Logi
+Plugin Service, claims the `com.loupedeck.plugin` UTI — so double-clicking one is
+meant to install it. On the machine this was built on, opening the package did
+nothing and left nothing in the log, with or without Options+ running, which is
+also how `logiplugintool install` behaves from a terminal. Unpacking it by hand is
+the route that reliably works.
 
 The package ships default profiles, so the keypad comes populated — four pages of
 nine keys, plus the Dialpad's two dials and four buttons. Nothing to drag.
 
 Default profiles are only applied when a profile is *created*: on first install, on
-*Add profile*, or on reset. If an empty Blender profile already exists from an
-earlier attempt, delete it first so it gets rebuilt from the template:
+*Add profile*, or on reset. If a Blender profile already exists from an earlier
+attempt, delete it and add it again so it is rebuilt from the template — the
+three-dot menu beside the profile in Options+ offers rename, duplicate and delete.
+
+Failing that, remove it on disk and let Options+ recreate it:
 
 ```bash
 rm -rf ~/"Library/Application Support/Logi/LogiPluginService/Applications"/Loupedeck7*/@_blender
