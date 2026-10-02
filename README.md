@@ -9,11 +9,17 @@ actually live in Blender instead of being blind shortcuts.
 
 ![The five shipped keypad pages](docs/keypad.png)
 
-macOS only for now. Tested with Blender 5.2, Logi Options+ 2.7 and Logi Plugin
+macOS only for now. Tested with Blender 5.2, Logi Options+ 2.8 and Logi Plugin
 Service 6.4 on Apple silicon.
 
 GPL-3.0-or-later throughout, because it bundles Blender's own UI icons and the
 add-on uses `bpy` — see [NOTICE.md](NOTICE.md).
+
+**Read the write-up:** [Blender on buttons: a profile for the Logitech MX Creative
+Console](https://www.xfanta.com/en/blender-mx-creative) walks through what sits on
+each page and how to install it, without the developer detail below — the article
+is for getting the keypad working, this README is for changing it. Also
+[in Czech](https://www.xfanta.com/cs/blender-mx-creative).
 
 ## How it works
 
